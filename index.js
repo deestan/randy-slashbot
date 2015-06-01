@@ -8,7 +8,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/', function(req, res) {
-  res.send('Hello World! ' + JSON.stringify(req.body));
+  var args = req.body.text.split(" ");
+  res.send("You: " + JSON.stringify(args));
 });
 
 app.listen(app.get('port'), function() {
