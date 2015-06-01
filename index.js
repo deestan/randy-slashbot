@@ -36,7 +36,6 @@ app.post('/', function(req, res) {
         return res.status(500).send(err);
       res.status(200).end();
     });
-    res.status(200).send(result.toString());
   } catch(e) {
     res.status(500).send(e.message || "I'm confused.");
   }
