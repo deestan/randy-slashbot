@@ -1,5 +1,5 @@
 {
-  "name": "randy-slashbot"
+  "name": "randy-slashbot",
   "version": "1.0.0",
   "description": "A /randy bot for slack.",
   "main": "index.js",
