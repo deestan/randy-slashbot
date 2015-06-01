@@ -18,5 +18,12 @@ module.exports = {
     if (!stuffs.length)
       throw new Error('shuffle [item1] [item2]...');
     return randy.shuffle(stuffs).join(" ");
+  },
+
+  sample: function(stuffs) {
+    var count = parseInt(stuffs.shift(), 10);
+    if (!stuffs.length || !count)
+      throw new Error('sample <count> [item1] [item2]...');
+    return randy.sample(stuffs, count).join(" ");
   }
 }
