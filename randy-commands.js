@@ -8,6 +8,16 @@ module.exports = {
     return randy.randInt(sides) + 1;
   },
 
+  int: function(args) {
+    var syntaxError = new Error('int [min] <max>');
+    if (!args.length || args.length > 2)
+      throw syntaxError;
+    args.forEach(function(x) { if (!/^\d+$/.test(x)) throw syntaxError; });
+    var max = parseInt(args.pop(), 10);
+    var min = parseInt(args.pop(), 10) || 0;
+    return randy.randInt(min, max);
+  },
+
   choice: function(stuffs) {
     if (!stuffs.length)
       throw new Error('choose [item1] [item2]...');
