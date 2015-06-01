@@ -5,7 +5,7 @@ module.exports = {
     var sides = parseInt(sidesStr, 10);
     if (!sides)
       throw new Error('d <sides>');
-    return randy.randInt(sides);
+    return randy.randInt(sides) + 1;
   },
 
   choice: function(stuffs) {
