@@ -30,7 +30,7 @@ app.post('/', function(req, res) {
     return res.status(400).send(usage);
   try {
     var result = randyCommands[func](args);
-    var chatMessage = user + " invoked randy: " + req.body.text + '\n> ' + result;
+    var chatMessage = user + ": " + req.body.text + '\n> ' + result;
     request.post(hookUrl, { form: JSON.stringify({ text: chatMessage }) }, function(err, resp, body) {
       if (err)
         return res.status(500).send(err);
