@@ -5,7 +5,7 @@ var request = require('request');
 var fs = require('fs');
 var app = express();
 
-var hookUrl = fs.readFileSync("./hookurl").toString();
+var hookUrl = process.env.WEBHOOK;
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
