@@ -35,5 +35,18 @@ module.exports = {
     var max = parseFloat(args.pop()) || 1;
     var min = parseFloat(args.pop()) || 0;
     return randy.uniform(min, max);
+  },
+
+  triangular: function(args) {
+    var syntaxError = new Error('triangular <min> <max> [mode]');
+    if (args.length > 3)
+      throw syntaxError;
+    args.forEach(function(x) { if (!/^\d*\.?\d*$/.test(x)) throw syntaxError; });
+    var min = parseFloat(args.shift());
+    var max = parseFloat(args.shift());
+    var mode = (min + max) / 2;
+    if (args.length)
+      mode = parseFloat(args.shift());
+    return randy.triangular(min, max, mode);
   }
 }
