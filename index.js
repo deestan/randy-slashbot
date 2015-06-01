@@ -15,7 +15,7 @@ app.post('/', function(req, res) {
   var text = req.body.text;
   // shortcut to d6 etc...
   if (/^d\d/.test(text))
-    text.replace(/d/, "d ");
+    text = text.replace(/d/, "d ");
 
   var args = text.split(" ");
   var func = args.shift();
