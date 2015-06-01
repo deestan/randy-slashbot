@@ -25,5 +25,15 @@ module.exports = {
     if (!stuffs.length || !count)
       throw new Error('sample <count> [item1] [item2]...');
     return randy.sample(stuffs, count).join(" ");
+  },
+
+  uniform: function(args) {
+    var syntaxError = new Error('uniform [min] [max]');
+    if (args.length > 2)
+      throw syntaxError;
+    args.forEach(function(x) { if (!/^\d*\.?\d*$/.test(x)) throw syntaxError; });
+    var max = parseFloat(args.pop()) || 1;
+    var min = parseFloat(args.pop()) || 0;
+    return randy.uniform(min, max);
   }
 }
