@@ -8,6 +8,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/', function(req, res) {
+  if (!req.body.text)
+    return res.status(400).send("Yeh?");
   var args = req.body.text.split(" ");
   res.send("You: " + JSON.stringify(args));
 });
