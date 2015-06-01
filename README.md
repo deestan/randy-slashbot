@@ -1,36 +1,13 @@
-# node-js-getting-started
+# randy-slashbot
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
+Slack Slash Command server for providing randomness.  Powered by randy.
 
-This application supports the [Getting Started with Node on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs) article - check it out.
-
-## Running Locally
-
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
-
-```sh
-$ git clone git@github.com:heroku/node-js-getting-started.git # or clone your own fork
-$ cd node-js-getting-started
-$ npm install
-$ npm start
-```
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
+Based off https://github.com/heroku/node-js-getting-started
 
 ## Deploying to Heroku
 
+This server needs a webhook to post results to.  This must be given as an environment variable in heroku:
+
 ```
-$ heroku create
-$ git push heroku master
-$ heroku open
+$ heroku config:set WEBHOOK=https://hooks.slack.com/services/blah/blah/blah
 ```
-
-## Documentation
-
-For more information about using Node.js on Heroku, see these Dev Center articles:
-
-- [Getting Started with Node.js on Heroku](https://devcenter.heroku.com/articles/getting-started-with-nodejs)
-- [Heroku Node.js Support](https://devcenter.heroku.com/articles/nodejs-support)
-- [Node.js on Heroku](https://devcenter.heroku.com/categories/nodejs)
-- [Best Practices for Node.js Development](https://devcenter.heroku.com/articles/node-best-practices)
-- [Using WebSockets on Heroku with Node.js](https://devcenter.heroku.com/articles/node-websockets)
