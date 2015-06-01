@@ -12,5 +12,11 @@ module.exports = {
     if (!stuffs.length)
       throw new Error('choose [item1] [item2]...');
     return randy.choice(stuffs);
+  },
+
+  shuffle: function(stuffs) {
+    if (!stuffs.length)
+      throw new Error('shuffle [item1] [item2]...');
+    return randy.shuffle(stuffs).join(" ");
   }
 }
