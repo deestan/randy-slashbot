@@ -28,7 +28,7 @@ module.exports = {
   },
 
   uniform: function(args) {
-    var syntaxError = new Error('uniform [[min] max]');
+    var syntaxError = new Error('uniform | uniform <max> | uniform <min> <max>');
     if (args.length > 2)
       throw syntaxError;
     args.forEach(function(x) { if (!/^\d*\.?\d*$/.test(x)) throw syntaxError; });
