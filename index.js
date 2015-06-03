@@ -19,7 +19,7 @@ app.post('/', function(req, res) {
 
   var user = req.body.user_name || "<hax0r>";
   var text = req.body.text;
-  var channel = req.body.channelz || "#testroompleaseignore";
+  var channelId = req.body.channel_id;
   console.log(req.body);
   // shortcut to d6 etc...
   if (/^d\d/.test(text))
@@ -35,7 +35,7 @@ app.post('/', function(req, res) {
     request.post(
       hookUrl, { form: JSON.stringify({
         text: chatMessage,
-        channel: channel
+        channel: channelId || "#testroompleaseignore"
       }) }, function(err, resp, body) {
       if (err)
         return res.status(500).send(err);
