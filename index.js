@@ -34,6 +34,7 @@ app.post('/', function(req, res) {
     request.post(
       hookUrl, { form: JSON.stringify({
         text: chatMessage,
+        icon_emoji: ":game_die:",
         channel: channelId
       }) }, function(err, resp, body) {
       if (err)
