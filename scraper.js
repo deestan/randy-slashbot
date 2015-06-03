@@ -3,12 +3,16 @@ var cheerio = require('cheerio');
 
 module.exports = function(url, selector, callback) {
   function getItOut(html) {
-    var $ = cheerio.load(html);
-    var menu = $(selector);
-    var content = [];
-    for (var i=0; i < menu.length; i++)
-      content.push($(menu[i]).text());
-    return content;
+    try {
+      var $ = cheerio.load(html);
+      var menu = $(selector);
+      var content = [];
+      for (var i=0; i < menu.length; i++)
+        content.push($(menu[i]).text());
+      return content;
+    } catch(error) {
+      return callback(error.message || "Scrape failed mysteriously.");
+    }
   }
 
   request(url, function (error, response, body) {
