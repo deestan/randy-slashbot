@@ -31,7 +31,7 @@ app.post('/', function(req, res) {
   try {
     randyCommands[func](args, function(err, result) {
       if (err)
-        res.status(500).send(err || "I'm confused.");
+        return res.status(500).send(err || "I'm confused.");
       var chatMessage = user + ": " + req.body.text + '\n> ' + result;
       request.post(
         hookUrl, { form: JSON.stringify({
