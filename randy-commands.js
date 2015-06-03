@@ -1,4 +1,19 @@
 var randy = require('randy');
+var scraper = require('./scraper');
+
+function possiblyTransformList(list, callback) {
+  var syntaxError = "scrape:<url> <jQuery selector>";
+  var isScrape = /^scrape:/;
+  if (!(list[0] && isScrape.test(list[0])))
+    return callback(null, list);
+  var snurp = list.join(' ');
+  var bitz = /^scrape: ?([^ ]+) +(.*)/.exec(snurp);
+  if (!snurp)
+    return callback(syntaxError);
+  var url = bitz[1];
+  var selector = bitz[2];
+  scraper(url, selector, callback);
+}
 
 module.exports = {
   d: function(sidesStr, callback) {
@@ -22,21 +37,30 @@ module.exports = {
 
   choice: function(stuffs, callback) {
     if (!stuffs.length)
-      return callback('choose [item1] [item2]...');
-    callback(null, randy.choice(stuffs));
+      return callback('choose [item1] [item2]... | choose scrape:<url> <jQuery selector>');
+    possiblyTransformList(stuffs, function(err, stuffs) {
+      if (err) return callback(err);
+      callback(null, randy.choice(stuffs));
+    });
   },
 
   shuffle: function(stuffs, callback) {
     if (!stuffs.length)
-      return callback('shuffle [item1] [item2]...');
-    callback(null, randy.shuffle(stuffs).join(" "));
+      return callback('shuffle [item1] [item2]... | shuffle scrape:<url> <jQuery selector>');
+    possiblyTransformList(stuffs, function(err, stuffs) {
+      if (err) return callback(err);
+      callback(null, randy.shuffle(stuffs).join(" "));
+    });
   },
 
   sample: function(stuffs, callback) {
     var count = parseInt(stuffs.shift(), 10);
     if (!stuffs.length || !count)
-      return callback('sample <count> [item1] [item2]...');
-    callback(null, randy.sample(stuffs, count).join(" "));
+      return callback('sample <count> [item1] [item2]... | sample <count> scrape:<url> <jQuery selector>');
+    possiblyTransformList(stuffs, function(err, stuffs) {
+      if (err) return callback(err);
+      callback(null, randy.sample(stuffs, count).join(" "));
+    });
   },
 
   uniform: function(args, callback) {
