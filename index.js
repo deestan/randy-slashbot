@@ -29,17 +29,20 @@ app.post('/', function(req, res) {
   if (!randyCommands[func])
     return res.status(400).send(usage);
   try {
-    var result = randyCommands[func](args);
-    var chatMessage = user + ": " + req.body.text + '\n> ' + result;
-    request.post(
-      hookUrl, { form: JSON.stringify({
-        text: chatMessage,
-        icon_emoji: ":game_die:",
-        channel: channelId
-      }) }, function(err, resp, body) {
+    randyCommands[func](args, function(err, result) {
       if (err)
-        return res.status(500).send(err);
-      res.status(200).end();
+        res.status(500).send(err || "I'm confused.");
+      var chatMessage = user + ": " + req.body.text + '\n> ' + result;
+      request.post(
+        hookUrl, { form: JSON.stringify({
+          text: chatMessage,
+          icon_emoji: ":game_die:",
+          channel: channelId
+        }) }, function(err, resp, body) {
+          if (err)
+            return res.status(500).send(err);
+          res.status(200).end();
+        });
     });
   } catch(e) {
     res.status(500).send(e.message || "I'm confused.");

@@ -1,62 +1,68 @@
 var randy = require('randy');
 
 module.exports = {
-  d: function(sidesStr) {
+  d: function(sidesStr, callback) {
     var sides = parseInt(sidesStr, 10);
     if (!sides)
-      throw new Error('d <sides>');
-    return randy.randInt(sides) + 1;
+      return callback('d <sides>');
+    callback(null, randy.randInt(sides) + 1);
   },
 
-  int: function(args) {
-    var syntaxError = new Error('int [min] <max>');
+  int: function(args, callback) {
+    var syntaxError = 'int [min] <max>';
     if (!args.length || args.length > 2)
-      throw syntaxError;
-    args.forEach(function(x) { if (!/^\d+$/.test(x)) throw syntaxError; });
+      return callback(syntaxError);
+    for (var i=0; i < args.length; i++)
+      if (!/^\d+$/.test(args[i]))
+        return callback(syntaxError);
     var max = parseInt(args.pop(), 10);
     var min = parseInt(args.pop(), 10) || 0;
-    return randy.randInt(min, max);
+    return callback(null, randy.randInt(min, max));
   },
 
-  choice: function(stuffs) {
+  choice: function(stuffs, callback) {
     if (!stuffs.length)
-      throw new Error('choose [item1] [item2]...');
-    return randy.choice(stuffs);
+      return callback('choose [item1] [item2]...');
+    callback(null, randy.choice(stuffs));
   },
 
-  shuffle: function(stuffs) {
+  shuffle: function(stuffs, callback) {
     if (!stuffs.length)
-      throw new Error('shuffle [item1] [item2]...');
-    return randy.shuffle(stuffs).join(" ");
+      return callback('shuffle [item1] [item2]...');
+    callback(null, randy.shuffle(stuffs).join(" "));
   },
 
-  sample: function(stuffs) {
+  sample: function(stuffs, callback) {
     var count = parseInt(stuffs.shift(), 10);
     if (!stuffs.length || !count)
-      throw new Error('sample <count> [item1] [item2]...');
-    return randy.sample(stuffs, count).join(" ");
+      return callback('sample <count> [item1] [item2]...');
+    callback(null, randy.sample(stuffs, count).join(" "));
   },
 
-  uniform: function(args) {
-    var syntaxError = new Error('uniform | uniform <max> | uniform <min> <max>');
+  uniform: function(args, callback) {
+    var syntaxError = 'uniform | uniform <max> | uniform <min> <max>';
     if (args.length > 2)
-      throw syntaxError;
-    args.forEach(function(x) { if (!/^\d*\.?\d*$/.test(x)) throw syntaxError; });
+      return callback(syntaxError);
+    for (var i=0; i < args.length; i++)
+      if (!/^\d*\.?\d*$/.test(args[i]))
+        return callback(syntaxError);
     var max = parseFloat(args.pop()) || 1;
     var min = parseFloat(args.pop()) || 0;
-    return randy.uniform(min, max);
+    callback(null, randy.uniform(min, max));
   },
 
-  triangular: function(args) {
-    var syntaxError = new Error('triangular <min> <max> [mode]');
+  triangular: function(args, callback) {
+    var syntaxError = 'triangular <min> <max> [mode]';
     if (args.length > 3)
-      throw syntaxError;
-    args.forEach(function(x) { if (!/^\d*\.?\d*$/.test(x)) throw syntaxError; });
+      return callback(syntaxError);
+    for (var i=0; i < args.length; i++)
+      if (!/^\d*\.?\d*$/.test(args[i]))
+        return callback(syntaxError);
     var min = parseFloat(args.shift());
     var max = parseFloat(args.shift());
     var mode = (min + max) / 2;
     if (args.length)
       mode = parseFloat(args.shift());
-    return randy.triangular(min, max, mode);
+    callback(null, randy.triangular(min, max, mode));
   }
 }
