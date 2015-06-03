@@ -49,7 +49,7 @@ module.exports = {
       return callback('shuffle [item1] [item2]... | shuffle scrape:<url> <jQuery selector>');
     possiblyTransformList(stuffs, function(err, stuffs) {
       if (err) return callback(err);
-      callback(null, randy.shuffle(stuffs).join(" "));
+      callback(null, randy.shuffle(stuffs).join("\n"));
     });
   },
 
@@ -59,7 +59,7 @@ module.exports = {
       return callback('sample <count> [item1] [item2]... | sample <count> scrape:<url> <jQuery selector>');
     possiblyTransformList(stuffs, function(err, stuffs) {
       if (err) return callback(err);
-      callback(null, randy.sample(stuffs, count).join(" "));
+      callback(null, randy.sample(stuffs, count).join("\n"));
     });
   },
 
