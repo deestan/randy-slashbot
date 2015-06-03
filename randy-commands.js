@@ -59,6 +59,8 @@ module.exports = {
       return callback('sample <count> [item1] [item2]... | sample <count> scrape:<url> <jQuery selector>');
     possiblyTransformList(stuffs, function(err, stuffs) {
       if (err) return callback(err);
+      if (stuffs.length < count)
+        return callback("Cannot sample " + count + " from " + stuffs.length + " items.");
       callback(null, randy.sample(stuffs, count).join("\n"));
     });
   },
