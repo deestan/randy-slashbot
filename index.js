@@ -19,6 +19,8 @@ app.post('/', function(req, res) {
 
   var user = req.body.user_name || "<hax0r>";
   var text = req.body.text;
+  var channel = req.body.channelz || "#testroompleaseignore";
+  console.log(req.body);
   // shortcut to d6 etc...
   if (/^d\d/.test(text))
     text = text.replace(/d/, "d ");
@@ -30,7 +32,11 @@ app.post('/', function(req, res) {
   try {
     var result = randyCommands[func](args);
     var chatMessage = user + ": " + req.body.text + '\n> ' + result;
-    request.post(hookUrl, { form: JSON.stringify({ text: chatMessage }) }, function(err, resp, body) {
+    request.post(
+      hookUrl, { form: JSON.stringify({
+        text: chatMessage,
+        channel: channel
+      }) }, function(err, resp, body) {
       if (err)
         return res.status(500).send(err);
       res.status(200).end();
