@@ -34,7 +34,7 @@ app.post('/', function(req, res) {
         return res.status(500).send(err || "I'm confused.");
       var chatMessage = "> " + user + ": " + req.body.text + '\n' + result;
       request.post(
-        hookUrl, { form: JSON.stringify({
+        hookUrl, { body: JSON.stringify({
           text: chatMessage,
           icon_emoji: ":game_die:",
           channel: channelId
