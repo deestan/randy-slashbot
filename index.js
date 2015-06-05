@@ -28,7 +28,7 @@ app.post('/', function(req, res) {
   function postChat(message, callback) {
     request.post(
       hookUrl, { body: JSON.stringify({
-        text: chatMessage,
+        text: message,
         icon_emoji: ":game_die:",
         channel: channelId
       }) }, callback);
@@ -52,7 +52,6 @@ app.post('/', function(req, res) {
     randyCommands[func](args, function(err, result) {
       if (err)
         return res.status(500).send(err);
-      var chatMessage = "> " + user + ": " + req.body.text + '\n' + result;
       postChat(result, function(err) {
         if (err) return reply(500, "Cannot post to chat: " + err);
         reply(200, "");
