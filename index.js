@@ -31,7 +31,7 @@ app.post('/', function(req, res) {
   try {
     randyCommands[func](args, function(err, result) {
       if (err)
-        return res.status(500).send(err || "I'm confused.");
+        return res.status(500).send(err);
       var chatMessage = "> " + user + ": " + req.body.text + '\n' + result;
       request.post(
         hookUrl, { body: JSON.stringify({
@@ -40,7 +40,7 @@ app.post('/', function(req, res) {
           channel: channelId
         }) }, function(err, resp, body) {
           if (err)
-            return res.status(500).send(err);
+            return res.status(500).send("Could not post reply via webhook: " + err);
           res.status(200).end();
         });
     });
