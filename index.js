@@ -20,32 +20,46 @@ app.post('/', function(req, res) {
   var user = req.body.user_name || "<hax0r>";
   var text = req.body.text;
   var channelId = req.body.channel_id;
+
   // shortcut to d6 etc...
   if (/^d\d/.test(text))
     text = text.replace(/d/, "d ");
 
+  function postChat(message, callback) {
+    request.post(
+      hookUrl, { body: JSON.stringify({
+        text: chatMessage,
+        icon_emoji: ":game_die:",
+        channel: channelId
+      }) }, callback);
+  }
+
+  var replied = false;
+  function reply(status, message) {
+    if (replied) return;
+    replied = true;
+    res.status(status).send(message);
+  }
+
   var args = text.split(" ");
   var func = args.shift();
   if (!randyCommands[func])
-    return res.status(400).send(usage);
+    return reply(400, usage);
   try {
+    postChat("> " + user + ": " + req.body.text, function(err) {
+      if (err) return reply(500, "Cannot post to chat: " + err);
+    });
     randyCommands[func](args, function(err, result) {
       if (err)
         return res.status(500).send(err);
       var chatMessage = "> " + user + ": " + req.body.text + '\n' + result;
-      request.post(
-        hookUrl, { body: JSON.stringify({
-          text: chatMessage,
-          icon_emoji: ":game_die:",
-          channel: channelId
-        }) }, function(err, resp, body) {
-          if (err)
-            return res.status(500).send("Could not post reply via webhook: " + err);
-          res.status(200).end();
-        });
+      postChat(result, function(err) {
+        if (err) return reply(500, "Cannot post to chat: " + err);
+        reply(200, "");
+      });
     });
   } catch(e) {
-    res.status(500).send(e.message || "I'm confused.");
+    reply(500, e.message || "I'm confused.");
   }
 });
 
